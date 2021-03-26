@@ -1,0 +1,129 @@
+1 
+1.1) Inserir um elemento x no fim da lista
+
+INICIO
+    Aloca (x)
+    info(x) <- x
+    
+    SE llink(H) = rlink(H) = H ENTAO  // Lista está vazia
+        rlink(x) = rlink(H)
+        llink(x) = H
+        rlink(H) = x
+    SENAO
+        SE rlink(H) = H ENTAO
+            rlink(llink(H)) <-  x
+            rlink(x) <- H
+            llink(x) <- llink(H)
+            llink(H) <- x
+        FIM-SE
+    FIM-SE
+    
+1.2) Remover um elemento x do início da lista
+
+INICIO
+    SE llink(H) = rlink(H) = H ENTAO
+        LISTA_VAZIA
+    SENAO
+        rlink(llink(H)) = rlink(H)
+        llink(rlink(H)) = llink(H)
+        H = rlink(H)
+        //rlink(llink(H)) <- llink(H)
+        //llink(rlink(H)) <- rlink(H)
+        //H <- rlink(H)
+    FIM-SE
+FIM
+
+1.3) Remover um elemento x do fim da lista
+
+INICIO
+    SE llink(H) = rlink(H) = H ENTAO // Nenhum elemento na lista
+        LISTA_VAZIA
+    SENAO
+        SE rlink(x) = H // Um elemento na lista
+            H->rlink = H;
+            H->link = H
+        SENAO // Mais de um elemento na lista
+            
+            llink(H) -> llink(llink(H))
+            rlink(llink(H)) <- H
+        FIM-SE
+    FIM-SE
+FIM
+
+1.4) Trocar as informações entre dois elementos da lista
+
+trocaInformacoes(H, x, y)
+// Troca entre x e y
+
+find = 0 // Variavel para procurar os elementos
+temp = H
+ENQUANTO (find != 0)
+FAÇA
+    SE (temp = x)
+        temp = H // "Zeramos" o temp para buscar o y
+        // Encontrou o X
+        ENQUANTO (find != 0)
+        FAÇA
+            SE (temp = y)
+                // Achamos y e x
+                // Realizada a troca
+                tempData = data(x)
+                data(x) <- data(y)
+                data(y) <- temData
+                ESCREVA("Troca efetuada com sucesso")
+                find = 1
+            FIM-SE
+            
+            temp <- rlink(H)
+            SE (temp = H)
+                ESCREVA("Valor Y nao encontrado")
+                RETORNA -1
+            FIM-SE
+            
+        FIM-ENQUANTO
+    FIM-SE
+    
+    temp <- rlink(H)
+    
+    SE (temp = H) // Rodou toda a lista e não encontrou x
+        ESCREVA("Valor X nao encontrado")
+        RETORNA -1
+    FIM-SE
+    
+FIM-ENQUANTO
+
+2) Escreva um algoritmo, baseado no bubblesort para a ordenação das informações dos elementos de um lista duplamente encadeada (considere que a informação armazeada seja uma chave).
+
+ORDENACAO(H, n)
+// H <- LISTA
+// n <- total de elementos da lista
+
+i <- 0
+j <- 0
+ENQUANTO i < (n-1) 
+FAÇA
+    ENQUANTO j < (n-1)
+    FAÇA
+        SE key(H) > key(rlink(H))
+            temp <- key(H)
+            key(H) <- key(rlink(H))
+            key(rlink(H)) <- temp
+        FIM-SE
+        j = j + 1
+    FIM-ENQUANTO
+    i = i + 1
+FIM-ENQUANTO 
+
+3) Modifique o algoritmo de inserção na lista duplamente encadeada do slide 27 de modo que a inserção seja feita sempre em rodem crescente do campo info(x)
+
+InsereListaDuplaOrdenada(H, x)
+
+temp <- rlink(H)
+
+ENQUANTO(temp != H) E (info(temp) < info(x))
+FAÇA
+    temp <- rlink(temp);
+FIM-ENQUANTO
+
+rlink(llink(P)) <- x
+llink(temp) <- x
