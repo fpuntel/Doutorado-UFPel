@@ -79,6 +79,7 @@ int main(){
                 
                 printf("Digite o elemento para inserir:");
                 scanf("%d", &x->key); 
+                
                 H = insercaoEmOrdem(H, x);
                 break;
         }
@@ -230,16 +231,21 @@ struct elementos* ordenacao(struct elementos *H){
         return H;
     }
     
+    if(H->llink == H->rlink){
+        printf("Somente um elemento na lista\n");
+        return H;
+    }
+    
     temp = malloc(sizeof (struct elementos));
     
-    printf("totalElementos: %i\n", totalElementos);
+    //printf("totalElementos: %i\n", totalElementos);
     while (i < (totalElementos - 1)){
         temp = H->rlink;
         temp2 = temp->rlink;
         j = 0;
         while (j < (totalElementos - 1)){
-            printf("temp->key: %i\n", temp->key);
-            printf("temp2->key: %i\n", temp2->key);
+            //printf("temp->key: %i\n", temp->key);
+            //printf("temp2->key: %i\n", temp2->key);
             if(temp->key > temp2->key){
                 aux = temp->key;
                 temp->key = temp2->key;
@@ -261,7 +267,11 @@ struct elementos* ordenacao(struct elementos *H){
 
 struct elementos* insercaoEmOrdem(struct elementos *H, struct elementos *x){
     struct elementos *temp;
-    int aux, i = 0, j = 0;
+    int aux, i = 0, j = 0, inseriu=0;
+    
+    // Força que a lista já esteja ordenada
+    H = ordenacao(H);
+    
     
     if(H->llink == H->rlink && H->rlink == H){
         H->rlink = x;
@@ -275,16 +285,34 @@ struct elementos* insercaoEmOrdem(struct elementos *H, struct elementos *x){
     
     temp = H->rlink;
     
-    while (temp != H){
-        if(temp->key >= x->key){
-            temp->rlink->llink = x;
-            x->rlink = temp->rlink;
+    do{
+        if(temp->key >= x->key && inseriu==0){
+            temp->llink->rlink = x;
+            x->llink = temp->llink;
+            
             temp->llink = x;
-            x->llink = temp;
+            x->rlink = temp;
+            
+            totalElementos++;
+            inseriu = 1;
         }
         temp = temp->rlink;
-    }
+    }while (temp != H);
     
-    //H = temp;
+    // Caso seja o maior insere no fim da lista
+    if (inseriu == 0){
+        printf("Inseriu item no fim da fila\n\n");
+        H->llink->rlink = x;
+        x->llink = H->llink;
+        
+        x->rlink=H;
+        H->llink=x;
+        
+        totalElementos++;
+        return H;
+    }
+       
+     
+    H = temp;
     return H; 
 }
