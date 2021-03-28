@@ -66,7 +66,7 @@ int main(){
                 scanf("%d", &elementoX);
                 printf("Por: ");
                 scanf("%d", &elementoY);
-                trocaElementos(H, elementoX, elementoY);
+                H = trocaElementos(H, elementoX, elementoY);
                 break;
             case 5:
                 mostraLista(H);
@@ -151,12 +151,13 @@ struct elementos* excluiElementoInicio(struct elementos *H){
             H->llink= H;
         }else {
             printf("\n ##Elemento que será excluido: %d\n", H->rlink->key);
-            H->llink->rlink = H->rlink;
-            H->rlink->llink = H->llink;
-            H = H->rlink;   
+            //H->llink->rlink = H; //->rlink;
+            H->rlink->rlink->llink = H;
+            //H->rlink->llink = H->llink;
+            H->rlink = H->rlink->rlink;   
         }
+        totalElementos--;
     }
-    totalElementos--;
     return H;
 }
 
@@ -217,9 +218,8 @@ struct elementos* trocaElementos(struct elementos *H, int x, int y){
         temp = temp->rlink;
     }while (temp != H);
     printf("\n\n # Itens não encontrados para realizar a troca\n\n");
-    
-    free(temp);
-    free(temp2);
+
+    return H;
 }
 
 struct elementos* ordenacao(struct elementos *H){
@@ -229,9 +229,7 @@ struct elementos* ordenacao(struct elementos *H){
     if(H->llink == H->rlink && H->rlink == H){
         printf("Lista vazia\n");
         return H;
-    }
-    
-    if(H->llink == H->rlink){
+    }else if(H->llink == H->rlink){
         printf("Somente um elemento na lista\n");
         return H;
     }
@@ -258,10 +256,10 @@ struct elementos* ordenacao(struct elementos *H){
         i++;
     }
         
-    mostraLista(temp->rlink);
+    //mostraLista(temp->rlink);
     
     H = temp->rlink;
-    
+
     return H;
 }
 
