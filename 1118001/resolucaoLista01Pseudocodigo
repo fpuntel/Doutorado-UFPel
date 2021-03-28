@@ -1,10 +1,8 @@
-1 
+1 Seguindo as notações utilizadas para as listas duplamente encadeadas (com cabeça), escreve os algoritmos para:
 ### 1.1) Inserir um elemento x no fim da lista
 
 INICIO
-    Aloca (x)
-    info(x) <- x
-    
+INSERE (H, x)
     SE llink(H) = rlink(H) = H ENTAO  // Lista está vazia
         rlink(x) = rlink(H)
         llink(x) = H
@@ -18,17 +16,16 @@ INICIO
             llink(H) <- x
         FIM-SE
     FIM-SE
-    
+     
 ### 1.2) Remover um elemento x do início da lista
 
 INICIO
     SE llink(H) = rlink(H) = H ENTAO
         LISTA_VAZIA
     SENAO
-        llink(rlink(H)) <- rlink(H)
-        rlink(llink(H)) <- llink(H)
+        llink(rlink(rlink(H))) <- H
+        rlink(H) <- rlink(rlink(H))
             
-        H <- rlink(H)
     FIM-SE
 FIM
 
@@ -42,12 +39,8 @@ INICIO
             H->rlink = H;
             H->llink = H;
         SENAO // Mais de um elemento na lista
-            llink(llink(rlink)) <- H
+            llink(llink(rlink(H))) <- H
             llink(H) = llink(llink(H))
-            
-            //rlink(llink(H)) = rlink(H)
-            //llink(rlink(H)) = llink(H)
-            //H = rlink(H)
         FIM-SE
     FIM-SE
 FIM
@@ -64,16 +57,17 @@ FUNCAO trocaInformacoes(H, x, y)
         temp = rlink(H)
         
         FAÇA
-            SE key(temp) == x
-                // Encontrado o item X
+            SE key(temp) = x
+                // ENCONTREI x
                 temp2 = rlink(H)
                 FAÇA
                     SE key(temp2) == y
+                        // Encontrei os dois itens
                         aux = key(temp)
                         key(temp) = key(temp2)
                         key(temp2) = aux
                         // troca efetuada
-                        return H
+                        RETORNA H // Assim que realizar a troca retorna o H
                     FIM-SE
                     temp2 = rlink(temp2)
                 ENQUANTO(temp != H)        
@@ -105,7 +99,6 @@ FUNCAO ORDENACAO(H, n, nElementos)
             j = 0
             
             ENQUANTO (j < (nElementos - 1))
-                
                 SE (key(temp) > key(temp2))
                     aux = key(temp)
                     key(temp) = key(temp2)
@@ -139,7 +132,7 @@ FUNCAO INSEREORDENADO(H, x)
     temp <- rlink(H)
 
     FAÇA
-        SE key(temp) E inseriu = 0 ENTAO
+        SE key(temp) >= key(x) E inseriu = 0 ENTAO
             rlink(llink(temp)) = x;
             llink(x) = llink(temp)
             
